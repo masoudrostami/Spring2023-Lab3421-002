@@ -1,0 +1,96 @@
+---
+title: "Homework 3 DATA3421"
+author: "LeMaur Kydd"
+date: "2023-02-22"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r, include=F}
+library(e1071)
+library(nycflights13)
+library(dplyr)
+```
+
+
+#### 1.) Using R, create a 3*12 matrix (3 rows and 12 columns); then calculate the means for each column of the matrix.  
+
+```{r}
+a = matrix(1:36,3,12, byrow = T)
+a
+
+a_mean = apply(a,2,mean)
+a_mean
+```
+
+#### 2.Calculate sum, mean, median, standard deviation, skewness, quantile, kurtosis, and variance for variable “Balance” in the job data set.  
+
+```{r}
+job = read.csv('job.csv')
+balance = job$Balance
+
+sum(balance)
+mean(balance)
+median(balance)
+sd(balance)
+skewness(balance)
+quantile(balance)
+kurtosis(balance)
+var(balance)
+```
+
+#### 3.Recode the “Age” variable to three categories of “Young Adult”,“Middle-aged Adult”, and “Old Adult”, based on quantiles of 30%, 60%,and 80%.  
+
+```{r}
+age = job$Age
+quantile(age, probs = c(0.30,0.60,0.80))
+
+age_categorized = cut(age,breaks = c(-Inf,33,40,47,Inf), labels = c('YoungAdult','Middle-agedAdult','OldAdult','Other'))
+head(age_categorized, n = 10)
+```
+
+#### 4.Sort the “Balance” variable from high to low in the job data set and create a new subset of the data set with just Balance and Job Classification variables.  
+
+```{r}
+bal_sorted = job[order(job$Balance, decreasing = T), ]
+bal_jobclass_sorted = bal_sorted[c('Balance','Job.Classification')]
+head(bal_jobclass_sorted, n= 10)
+```
+
+#### 5.Subset the job data set with just the England region and with a balance of higher than 100,000.  
+
+```{r}
+job_subset = subset(job, Region == 'England' & Balance > 100000)
+head(job_subset, n=10)
+
+job_subset = job_subset[c('Region','Balance')]
+head(job_subset, n=10)
+```
+
+#### 6.Using the flights data set, create a new variable using existing variables(arr_time and sched_arr_time) and call it delay time.  
+
+```{r}
+delay_time = mutate(flights, delay_time=arr_time-sched_arr_time)
+head(delay_time$delay_time, n=10)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
