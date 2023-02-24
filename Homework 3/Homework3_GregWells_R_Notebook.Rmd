@@ -1,0 +1,127 @@
+---
+title: "DATA 3421- Homework 3"
+output: html_notebook
+---
+
+This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
+
+Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Ctrl+Shift+Enter*. 
+
+```{r}
+
+```
+
+```{r}
+#install.packages("tidyverse")
+library("tidyverse")
+#install.packages("dplyr")
+library("dplyr")
+library("tidyr")
+library("ggplot2")
+library(ggplot2)
+```
+
+
+```{r, setup, include=FALSE}
+knitr::opts_knit$set(root.dir = 'C:/Users/greg/Documents/GitHub/DATA3421/Lab3')
+```
+
+The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike *Knit*, *Preview* does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.
+```{r}
+##Creating matrices with matrix()
+#####################################
+print("Homework 3 Question 1",quote=FALSE)
+myMatrix<-matrix(rpois(3*12,10),nrow=3,ncol=12)
+myMatrix
+print("Here's one method to show the mean of each column:",quote=FALSE)
+apply(myMatrix,2,mean)  #mean of the elements for each column
+print("Here's another method to show the mean of each column:",quote=FALSE)
+colMeans(myMatrix)
+
+```
+```{r}
+print("Homework 3 Question 2",quote=FALSE)
+#setwd("C:/Users/greg/Documents/GitHub/DATA3421/Lab3")
+df<-read.csv("job.csv")
+#df
+
+library(psych)
+#describe(df)  
+#unique(df$Balance)
+dfSum<-sum(df$Balance)
+dfMean<-mean(df$Balance)
+dfMedian<-median(df$Balance)
+dfSd<-sd(df$Balance)
+
+#max(df$Balance)
+#range(df$Balance)
+dfQuantString<-toString(unname(quantile(df$Balance)))
+
+#install.packages("e1071")
+library(e1071)
+dfSkew<-skewness(df$Balance)
+#Skewness rule:  less than -1 or larger than 1 == highly skewed
+#                -1.0 to -.5  or   .5 to 1.0  == moderate skew
+
+dfKurt<-kurtosis(df$Balance)
+dfVar<-var(df$Balance)
+sprintf("Balance Sum: %s",dfSum)
+sprintf("Balance Mean: %s",dfMean)
+sprintf("Balance Median: %s",dfMedian)
+sprintf("Balance Std Dev: %s",dfSd)
+sprintf("Balance Skewness: %s",dfSkew)
+cat("\n                         0%       25%       50%       75%      100% \n")
+sprintf("Balance Quantile: %s",dfQuantString)
+sprintf("Balance Kurtosis: %s",dfKurt)
+sprintf("Balance Variance: %s",dfVar)
+hist(df$Balance)
+#install.packages ("pastecs")
+#library (pastecs)
+#by(df$Birth_Rate,INDICES=df$Income_Group,stat.desc)
+
+#describeBy(df,df$Balance)
+#describe(df,na.rm=TRUE)
+
+
+```
+```{r}
+print("Homework 3 Question 3",quote=FALSE)
+#install.packages("DescTools")
+library(DescTools)
+x<-CutQ(df$Age, breaks=quantile(df$Age, c(0,.30,.60,.80,1)), labels=c("Child","Young Adult", "Middle-aged Adult", "Old Adult"), na.rm = TRUE)
+df$Age<-x
+head(df,20)
+```
+
+```{r}
+print("Homework 3 Question 4",quote=FALSE)
+#names(df)
+dfBal_JobClass<-select(df,Balance,Job.Classification)
+dfBal_JobClass_sorted<-dfBal_JobClass[order(dfBal_JobClass$Balance),]
+head(dfBal_JobClass_sorted,10)
+tail(dfBal_JobClass_sorted,10)
+
+```
+
+
+```{r}
+print("Homework 3 Question 5",quote=FALSE)
+dfEngland_High<-subset(df,Region=="England"&Balance>100000)
+head(dfEngland_High,20)
+```
+
+
+```{r}
+print("Homework 3 Question 6",quote=FALSE)
+library(nycflights13)
+names(flights)
+#Calculate the arrival time in minutes since midnight
+flights<-mutate(flights,arr_time_mins=(   (floor(arr_time/100)*60) + (arr_time-floor(arr_time/100)*100)   ))
+#Calculate the scheduled arrival time in minutes since midnight
+flights<-mutate(flights,sched_arr_time_mins=(   (floor(sched_arr_time/100)*60) + (sched_arr_time-floor(sched_arr_time/100)*100)   ))
+
+flights<-mutate(flights,delay_time=arr_time_mins-sched_arr_time_mins)
+View(flights)
+
+```
+
