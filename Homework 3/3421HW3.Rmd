@@ -1,0 +1,151 @@
+---
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+Creating a matrix with three 12 and 8 columns and calculating the means
+for each column of the matrix?
+
+```{r}
+matrix(1:36, nrow = 3, ncol = 12)
+```
+
+```{r}
+colMeans(matrix(1:36, nrow = 3, ncol = 12))
+```
+
+```{r}
+install.packages("psych")
+library(psych)
+
+install.packages("moments")
+library(moments)
+```
+
+Calculate sum, mean, median, standard deviation, skewness, quantile,
+kurtosis, and variance for variable "Balance" in the job dataset
+
+```{r}
+#Sum 
+sum(job$Balance)
+```
+
+```{r}
+#Mean
+mean(job$Balance)
+```
+
+```{r}
+#Median
+median(job$Balance)
+```
+
+```{r}
+#Standard Deviation
+sd(job$Balance)
+```
+
+```{r}
+#Skewness
+skewness(job$Balance)
+```
+
+```{r}
+#Quantile
+quantile(job$Balance)
+```
+
+```{r}
+#Kurtosis
+kurtosis(job$Balance)
+```
+
+```{r}
+#Variance
+var(job$Balance)
+```
+
+Recode the "Age" variable to three categories of "Young Adult", "Middle-
+aged Adult", and "Old Adult", based on quantiles of 30%, 60%, and 80%.
+
+```{r}
+library(dplyr)
+unique(job$Age)
+quantile(job$Age, probs = c(.3, .6, .8))
+```
+
+```{r}
+job$Age[job$Age<=33] = "Young Adult"
+```
+
+```{r}
+job$Age[job$Age>33 & job$Age< 47] = "Middle-aged Adult"
+```
+
+```{r}
+job$Age[job$Age>=47] = "Old Adult"
+```
+
+```{r}
+View(job)
+##Not quite sure what is going on in my code, as when I run the previous cell everything gets overwritten by "Old Age"
+```
+
+Sort the "Balance" variable from high to low in the job dataset and
+create a new subset of the dataset with just Balance and Job
+Classification variables.
+
+```{r}
+df<-job[order(-job$Balance),]
+```
+
+```{r}
+View(df)
+```
+
+```{r}
+df2<-subset(df, select=c(2, 4))
+```
+
+```{r}
+View(df2)
+```
+
+Subset the job dataset with just the England region and with a balance
+of higher than 100,000
+
+```{r}
+df3<-subset(df, df$Region == "England"& df$Balance>100000)
+```
+
+```{r}
+View(df3)
+```
+
+Using the flights dataset, create a new variable using existing
+variables (arr_time and sched_arr_time) and call it delay time.
+
+```{r}
+install.packages("nycflights13")
+```
+
+```{r}
+library(nycflights13)
+```
+
+```{r}
+View(flights)
+```
+
+```{r}
+flights2<-select(flights, sched_arr_time, arr_time)
+```
+
+```{r}
+View(flights2)
+```
+
+```{r}
+mutate(flights2, delay_time = arr_time-sched_arr_time)
+```
