@@ -1,0 +1,86 @@
+---
+title: "HW5-AlyssaJuarez"
+output: html_document
+date: "2023-03-09"
+---
+
+```{r}
+# packages
+library(tidyverse)
+library(dplyr)
+library(ggplot2)
+```
+
+```{r}
+# A: Data Visualization
+
+##1. Load the iris dataset into R and explore its structure and summary statistics.
+data("iris")
+summary(iris)
+```
+
+```{r}
+##2. Create a scatterplot of the sepal length and width of the iris flowers. Use different colors to represent the different species of flowers.
+par(mar=c(1, 1, 1, 1))
+speciesID<- as.numeric(iris$Species)
+plot(iris$Petal.Length-iris$Petal.Width, main="Length vs Width", pch=speciesID, col=speciesID)
+
+```
+
+```{r}
+## 3. Create a boxplot of the petal length for each species of flower.
+length <- iris$Sepal.Length
+b<-ggplot(data= iris, aes(x=Species, y= length, pch=Species, colours="red"))+theme_classic()
+b+geom_boxplot(size=0.1)
+        #couldnt get any color on this one
+```
+
+```{r}
+## 4. Create a histogram of the sepal width of the iris flowers.
+
+ggplot()+geom_histogram(data=iris, aes(x=Sepal.Width, y=..density.., fill=Species), colour="black")+theme_classic()
+
+## Customize each visualization by adding appropriate labels, colors, and design elements using the ggplot2 library.
+
+```
+
+```{r}
+######## B: Linear Regression
+
+## 1. Load the mtcars dataset into R and explore its structure and summary statistics.
+data("mtcars")
+summary(mtcars)
+```
+
+```{r}
+##2. Use linear regression to model the relationship between "mpg" (dependent variable) and"hp" (Independent variable). Interpret the regression coefficients and R-squared value.
+#install.packages("car")
+#install.packages("QuantPsyc")
+
+
+library(car)
+library(QuantPsyc)
+model<- lm(mtcars$mpg~mtcars$hp)
+model
+summary(model)
+#RESPONSE: 
+#r-squared: 40% of variation in hp cannot explain mpg alone.
+#coefficents: 
+
+```
+
+```{r}
+## 3. Create a multiple linear regression model (using "hp" and "wt" as Independent variables,and mpg as a dependent variable).
+model2<- lm(mtcars$mpg~mtcars$hp+mtcars$wt)
+model2
+summary(model2)
+```
+
+```{r}
+## 4. Compare the predictive power of the simple linear regression model (using "hp" as the predictor variable) and the multiple linear regression model (using "hp" and "wt" as predictor variables).
+anova(model, model2)
+
+plot(model)
+plot(model2)
+```
+
