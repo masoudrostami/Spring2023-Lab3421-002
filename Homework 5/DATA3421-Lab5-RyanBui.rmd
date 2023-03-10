@@ -1,0 +1,132 @@
+---
+title: "Data3421-Lab5-RyanBui"
+author: "Ryan Bui"
+date: '2023-03-10'
+output: html_document
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax
+for authoring HTML, PDF, and MS Word documents. For more details on
+using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that
+includes both content as well as the output of any embedded R code
+chunks within the document. You can embed an R code chunk like this: \##
+Problem A1: 1. Load the iris dataset into R and explore its structure
+and summary statistics.
+
+```{r iris}
+summary(iris)
+```
+
+## Problem A2:
+
+Create a scatterplot of the sepal length and width of the iris flowers.
+Use different colors to represent the different species of flowers.
+
+```{r iris, echo=FALSE}
+library(ggplot2)
+ggplot(iris, aes(x = Sepal.Width, y = Sepal.Length, color = Species)) + 
+  geom_point() +
+  labs(title = "Scatterplot of Sepal Width vs Sepal Length",
+       x = "Sepal Width", y = "Sepal Length")
+```
+
+## Problem A3
+
+Create a boxplot of the petal length for each species of flower.
+
+```{r iris, echo=FALSE}
+# Sub-setting the iris dataset into each species of flower
+ggplot(iris, aes(x = Species, y = Sepal.Length)) +
+  geom_boxplot() +
+  labs(title = "Boxplot of Sepal Width by Species",
+       x = "Species", y = "Sepal Length")
+```
+
+## Problem A4
+
+Create a histogram of the sepal width of the iris flowers.
+
+```{r iris, echo=FALSE}
+ggplot(iris, aes(x=Sepal.Width)) +
+  geom_histogram(fill="lightblue", color="black", binwidth=0.2) +
+  labs(title="Histogram of Sepal Width", x="Sepal Width", y="Frequency")
+```
+
+## Problem B1
+
+Load the mtcars dataset into R and explore its structure and summary
+statistics.
+
+```{r mtcars, echo=FALSE}
+summary(mtcars)
+```
+
+## Problem B2
+
+Use linear regression to model the relationship between "mpg" (dependent
+variable) and "hp" (Independent variable). Interpret the regression
+coefficients and R-squared value.
+
+```{r mtcars, echo=FALSE}
+# Create a scatter plot of mpg vs. hp
+model <- lm(mpg ~ hp, data = mtcars)
+# Print the model summary
+summary(model)
+```
+
+```{r mtcars, echo=FALSE}
+# Add the regression line to the scatter plot
+ggplot(mtcars, aes(x = hp, y = mpg)) +
+  geom_point() +
+  labs(x = "Horsepower", y = "Miles per Gallon") +
+  ggtitle("Scatter plot of mpg vs. hp with regression line") +
+  geom_smooth(method = "lm", se = FALSE)
+```
+
+The adjusted R-Squared value is 0.5892 which means that about 59% of the
+variance in the response variable is explained by our independent
+variable which is horsepower. Looking at the coefficient of horsepower
+we can see that it looks like that for every point of horsepower you
+lose 0.0068 miles per gallon. \## Problem B3 Create a multiple linear
+regression model (using "hp" and "wt" as Independent variables, and mpg
+as a dependent variable).
+
+```{r mtcars, echo=FALSE}
+model <- lm(mpg ~ hp + wt, data = mtcars)
+summary(model)
+```
+
+```{r mtcars, echo=FALSE}
+ggplot(mtcars, aes(x = wt, y = mpg)) +
+  geom_point() +
+  geom_smooth(method = "lm", formula = y ~ x, se = FALSE, color = "red") +
+  labs(title = "Mileage vs. Weight+Horsepower", x = "Weight and Horsepower", y = "Miles Per Gallon")
+```
+
+## Problem B4
+
+Compare the predictive power of the simple linear regression model
+(using "hp" as the predictor variable) and the multiple linear
+regression model (using "hp" and "wt" as predictor variables).
+
+Comparing the adjusted R-squared values the multiple linear regression
+model has the higher value with 0.8148 compared to the simple linear
+regression model which has 0.5892. So the multiple linear regression
+model can explain 81% of the variance in the dependent variable.
+
+The horsepower coefficient seems to have gotten slightly larger from the
+original model it is not -0.03 where as before it was -0.006. It could
+be noted that the weight coefficient much larger than the other ones so
+one could infer that weight has a larger impact on the miles per gallon
+of the vehicle.
