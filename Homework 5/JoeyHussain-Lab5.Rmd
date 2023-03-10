@@ -1,0 +1,88 @@
+---
+title: "Lab5"
+output: html_document
+date: "2023-03-09"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Lab 5
+
+This is my markdown file for lab 5. In this file you will see all of the work I did on this assignment and my solutions for it.
+
+
+### Imports
+```{r imports}
+library(ggplot2)
+library(datasets)
+```
+
+
+## Part A
+
+### Loading in and getting the summary statistics for the iris dataset
+```{r iris}
+data(iris)
+summary(iris)
+```
+
+### Plots for the iris dataset
+#### Scatter Plot
+
+```{r scatter, echo=TRUE}
+d<-ggplot(data = iris,aes(x=Sepal.Length,y=Sepal.Width, color = Species))
+d+geom_point()+geom_smooth(alpha=0.01)+theme_classic()
+```
+
+#### Box Plot
+```{r Box, echo=TRUE}
+b<-ggplot(data = iris,aes(x=Petal.Length, color = Species))
+b+geom_boxplot(size=2,outlier.color = "Purple",outlier.shape = 2,
+               outlier.size = 1,outlier.alpha = 0.4,)+theme_classic()+coord_flip()
+```
+
+#### Histogram
+
+```{r Hist, echo=TRUE}
+ggplot()+geom_histogram(data = iris,aes(x=Sepal.Width,y=..density.., fill = Species),
+                        color="black")+theme_linedraw()
+```
+
+## Part B
+
+### Loading in and getting the summary statistics for the mtcars dataset
+```{r mtcars}
+data("mtcars")
+summary(mtcars)
+```
+
+
+### Use linear regression to model the relationship between "mpg" (dependent variable) and "hp" (Independent variable). and Interpret the regression coefficients and R-squared value.
+
+```{r linmod}
+carmod<-lm(mtcars$mpg~mtcars$hp)
+
+carmod$coefficients
+```
+
+### Create a multiple linear regression model (using "hp" and "wt" as Independent variables, and mpg as a dependentvariable).
+```{r multlinmod}
+multcarmod<-lm(mtcars$mpg~mtcars$hp+mtcars$wt)
+multcarmod$coefficients
+```
+
+
+
+### Comparing the predictive power of the simple linear regression model (using "hp" as the predictor variable) and the multiple linear regression model (using "hp" and "wt" as predictor variables).
+
+
+```{r comparison}
+anova(carmod,multcarmod)
+
+plot(carmod)
+
+plot(multcarmod)
+```
+
