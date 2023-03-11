@@ -1,0 +1,56 @@
+---
+title: "HW 05"
+output:
+  pdf_document: default
+  html_document: default
+date: "2023-03-10"
+---
+A: Data Visualization
+```{r}
+library(tidyverse)
+library(dplyr)
+library(ggplot2)
+
+#Q.1)
+data('iris')
+summary(iris)
+
+#Q.2)
+ggplot(iris, aes(x=Sepal.Length, y=Sepal.Width, colour = Species)) + geom_point() + labs(title = 'Sepal Width and Length', x='Sepal Length', y='Sepal Width')
+
+#Q.3)
+ggplot(iris, aes(x=Species, y=Sepal.Length)) + geom_boxplot() + labs(title = 'Sepal Width by species', x='Species', y='Sepal Width')
+
+
+#Q.4)
+ggplot(iris, aes(x=Sepal.Width)) + geom_histogram(binwidth=0.2, bins=40, color = 'black', fill='light yellow') + labs(title = 'Histogram of Sepal Width', x='Sepal Width')
+```
+
+B: Linear Regression
+
+```{r}
+#Q.1)
+data('mtcars')
+summary(mtcars)
+
+#Q.2)
+m1<-lm(mpg~hp,data = mtcars)
+summary(m1)
+
+```
+The intercept is 30.1 and the regression coefficient is-0.06 meaning that there is a negative correlation between mpg and hp. The r-squared value indicates a 60% variability in the model
+
+```{r}
+#Q.3)
+m2<-lm(mpg~hp+wt,data=mtcars)
+summary(m2)
+
+#Q.4)
+anova(m1,m2)
+
+```
+Since the p-value is less than 0.05 there is a difference in the predictive power.
+
+
+
+
