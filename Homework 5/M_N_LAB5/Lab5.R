@@ -1,0 +1,153 @@
+setwd("/Users/mn/Desktop/DATA3421/Labs/Lab5")
+
+# A:  DATA VISUALIZATION:
+
+#######################################################
+# 1:  Load the iris dataset into R
+#     Explore its structure and summary statistics
+#######################################################
+
+# Loading the dataset:
+data(iris)
+
+# Exploring its structure:
+str(iris)
+
+# Exploring its summary statistic:
+summary(iris)
+
+##############################################################################
+# 2.  Create a scatterplot of the sepal length and width of the iris flowers. 
+#     Use different colors to represent the different species of flowers.
+##############################################################################
+
+# Creating Scatterplot
+library(ggplot2)
+
+ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width, color = Species)) +
+  geom_point() +
+  labs(x = "Sepal Length", y = "Sepal Width", color = "Species")
+
+
+# Create scatterplot with customized labels, colors, and design elements
+ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width, color = Species)) +
+  geom_point(size = 3, alpha = 0.8) +
+  labs(x = "Sepal Length (cm)", y = "Sepal Width (cm)",
+       title = "Scatterplot of Sepal Length vs. Width",
+       subtitle = "Grouped by Species",
+       color = "Species") +
+  theme_bw() +
+  theme(plot.title = element_text(size = 16, face = "bold", hjust = 0.5),
+        plot.subtitle = element_text(size = 14, hjust = 0.5),
+        axis.text = element_text(size = 12),
+        axis.title = element_text(size = 14),
+        legend.title = element_text(size = 12),
+        legend.text = element_text(size = 10),
+        legend.position = "bottom")
+#######################################################################
+# 3.  Create a boxplot of the petal length for each species of flower.
+#######################################################################
+
+# Creating Boxplot
+library(ggplot2)
+
+ggplot(iris, aes(x = Species, y = Petal.Length)) +
+  geom_boxplot() +
+  labs(x = "Species", y = "Petal Length")
+
+#################################################################
+# 4.  Create a histogram of the sepal width of the iris flowers.
+#################################################################
+
+# Creating Histogram
+library(ggplot2)
+
+ggplot(iris, aes(x = Sepal.Width)) +
+  geom_histogram(binwidth = 0.2, color = "black", fill = "green") +
+  labs(x = "Sepal Width", y = "Frequency")
+
+
+
+# B:  LINEAR REGRESSION
+
+######################################################
+# 1.  Load the mtcars dataset into R
+#     Explore its structure and summary statistics
+######################################################
+
+# Loading the dataset:
+data(mtcars)
+
+# Exploring its structure:
+str(mtcars)
+
+# Exploring its summary statistic:
+summary(mtcars)
+
+#################################################################
+# 2.  Use linear regression to model the relationship between 
+#     "mpg" (dependent variable) and "hp" (Independent variable) 
+#     Interpret the regression coefficients and R-squared value
+#################################################################
+
+# fit linear regression model
+fit_LRM <- lm(mpg ~ hp, data = mtcars)
+
+# display summary of the model
+summary(fit_LRM)
+
+######################################################
+# 3.  Create a multiple linear regression model 
+#     (using "hp" and "wt" as Independent variables, 
+#     and mpg as a dependent variable).
+######################################################
+
+# fit multiple linear regression model
+fit_MLRM <- lm(mpg ~ hp + wt, data = mtcars)  
+
+# display summary of the model
+summary(fit_MLRM)  
+
+#########################################################################
+# 4.  Compare the predictive power of the simple linear regression model 
+#     (using "hp" as the predictor variable) 
+#     and the multiple linear regression model 
+#     (using "hp" and "wt" as predictor variables)
+#########################################################################
+
+data(mtcars)  # load mtcars dataset
+
+# Fit simple linear regression model using hp as predictor variable
+fit1 <- lm(mpg ~ hp, data = mtcars)
+
+# Fit multiple linear regression model using hp and wt as predictor variables
+fit2 <- lm(mpg ~ hp + wt, data = mtcars)
+
+# Make predictions using simple and multiple regression models
+pred1 <- predict(fit1, newdata = mtcars)
+pred2 <- predict(fit2, newdata = mtcars)
+
+# Calculate mean squared error (MSE) and root mean squared error (RMSE)
+MSE1 <- mean((mtcars$mpg - pred1)^2)
+MSE2 <- mean((mtcars$mpg - pred2)^2)
+RMSE1 <- sqrt(MSE1)
+RMSE2 <- sqrt(MSE2)
+
+# Calculate R-squared values
+Rsq1 <- summary(fit1)$r.squared
+Rsq2 <- summary(fit2)$r.squared
+
+# Display evaluation metrics
+cat("Simple Linear Regression Model:\n")
+cat("MSE:", MSE1, "\n")
+
+cat("RMSE:", RMSE1, "\n")
+cat("R-squared:", Rsq1, "\n\n")
+
+cat("Multiple Linear Regression Model:\n")
+cat("MSE:", MSE2, "\n")
+cat("RMSE:", RMSE2, "\n")
+cat("R-squared:", Rsq2, "\n")
+
+
+
