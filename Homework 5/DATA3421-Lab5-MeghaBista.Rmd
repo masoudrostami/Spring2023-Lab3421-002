@@ -1,0 +1,83 @@
+---
+title: "Homework5"
+output: html_document
+date: "2023-03-10"
+---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+library(tidyverse)
+library(dplyr)
+library(ggplot2)
+library(datasets)
+
+#A: Data Visualization
+#1. Load the iris dataset into R and explore its structure and summary statistics.
+```{r }
+head(iris)
+str(iris)
+summary(iris)
+```
+   
+
+
+#2. Create a scatterplot of the sepal length and width of the iris flowers. Use different colors to represent the different species of flowers.
+```{r }
+ggplot(iris) +aes(x = Sepal.Length, y = Petal.Length, col = Species) +geom_point() +scale_color_hue()
+```
+
+#3 Create a boxplot of the petal length for each species of flower.
+```{r }
+box.plot<-ggplot(iris)+aes(Petal.Length, col = Species) +geom_boxplot() +scale_color_hue()
+box.plot
+```
+
+#4. Create a histogram of the sepal width of the iris flowers.
+```{r }
+ggplot(iris)+aes(x=Sepal.Length,fill=Species) + geom_histogram() +theme_minimal()
+```
+
+#B: Linear Regression:
+#1 Load the mtcars dataset into R and explore its structure and summary statistics.
+```{r }
+data("mtcars")
+head(mtcars)
+summary(mtcars)
+```
+
+#2Use linear regression to model the relationship between "mpg" (dependent variable) and "hp" (Independent variable). Interpret the regression coefficients and R-squared value.
+```{r }
+install.packages("QuantPsyc")
+library(QuantPsyc)
+
+model1<-lm(data=mtcars,mpg~hp)
+model1
+
+
+summary(model1)
+```
+
+#The coeffiecent is -0.06823.
+#The multiple R-squared value is 0.6024 and the adjusted R-squared is 0.5892. This tells us that the model1 contains around 60 percent variability.  
+#The intercept is 30.09886
+
+#3. Create a multiple linear regression model (using "hp" and "wt" as Independent variables,and mpg as a dependent variable).
+```{r }
+model2<-lm(data=mtcars, mpg~hp+wt)
+model2
+summary(model2)
+```
+
+#4. Compare the predictive power of the simple linear regression model (using "hp" as the predictor variable) and the multiple linear regression model (using "hp" and "wt" as predictor variables).
+```{r }
+anova(model1,model2)
+```
+# The predictive power of the simple linear regression model and the multiple linear regression model is different since the p-value is less 0.05.
+
+
+
+
+
+
+
+
