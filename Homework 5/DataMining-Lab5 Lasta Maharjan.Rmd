@@ -1,0 +1,84 @@
+---
+title: "DataMining-Lab5"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# A Data Visualization
+### 1. Load the iris dataset into R and explore its structure and summary statistics.
+```{r}
+library(tidyverse)
+library(dplyr)
+library(ggplot2)
+library(datasets)
+data(iris)
+summary(iris)
+str(iris)
+```
+### 2. Create a scatterplot of the sepal length and width of the iris flowers. Use different colors 
+to represent the different species of flowers.
+```{r}
+scatterplot<-ggplot(data=iris, aes(x=Sepal.Length, y=Sepal.Width, colour=Species))+geom_point()+geom_smooth()+theme_classic()+labs(title = "Scatterplot of Sepal Length and Width of Iris Flowers",
+       x = "Sepal Length (cm)",
+       y = "Sepal Width (cm)",
+       color = "Species")
+scatterplot
+```
+### 3. Create a boxplot of the petal length for each species of flower.
+```{r}
+boxplotiris<- ggplot(iris, aes(x = Species, y = Petal.Length, fill = Species)) + 
+  geom_boxplot() +
+  labs(title = "Boxplot of Petal Length for Each Species of Flower",
+       x = "Species",
+       y = "Petal Length (cm)",
+       fill = "Species") +
+  theme_classic()
+boxplotiris
+```
+
+### 4. Create a histogram of the sepal width of the iris flowers.
+
+```{r}
+histiris <- ggplot(iris, aes(x = Sepal.Width, fill = Species)) + 
+  geom_histogram(binwidth = 0.2, alpha = 0.5, position = "identity") +
+  labs(title = "Histogram of Sepal Width of Iris Flowers",
+       x = "Sepal Width (cm)",
+       y = "Frequency",
+       fill = "Species") +
+  scale_fill_manual(values = c("#00AFBB", "#E7B800", "#FC4E07")) +
+  theme_classic()
+histiris
+```
+
+# B: Linear Regression
+### 1. Load the mtcars dataset into R and explore its structure and summary statistics.
+
+```{r}
+
+data(mtcars)
+summary(mtcars)
+str(mtcars)
+```
+### 2. Use linear regression to model the relationship between "mpg" (dependent variable) and "hp" (Independent variable). Interpret the regression coefficients and R-squared value.
+
+```{r}
+linear_model <- lm(mpg~hp, data=mtcars)
+summary(linear_model)
+```
+#### Using the linear regression, we can see that the intercept is 30.099 and the regression coefficient is -0.068, which means that mpg and hp have negative correlation. The R-square is 0.6024, about 60% variability can be seen in the model. 
+
+### 3. Create a multiple linear regression model (using "hp" and "wt" as Independent variables, and mpg as a dependent variable).
+
+```{r}
+model1 <- lm(mpg~hp+wt, data=mtcars)
+summary(model1)
+```
+### 4. Compare the predictive power of the simple linear regression model (using "hp" as the predictor variable) and the multiple linear regression model (using "hp" and "wt" as predictor variables).
+
+```{r}
+anova(linear_model,model1)
+```
+#### From the above comparison, we can see that the P-value is << 0.05, we can say that there is difference between predictive power of the model. 
