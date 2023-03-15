@@ -1,0 +1,99 @@
+# A: Data Visualization
+## Question 1
+Load the iris dataset into R and explore its structure and summary statistics.
+```{r}
+library(datasets)
+
+# Loads the iris dataset
+data(iris)
+
+# Dataset structure of the iris dataset
+str(iris)
+
+# Summary statistics of the iris dataset
+summary(iris)
+```
+
+## Question 2
+Create a scatterplot of the sepal length and width of the iris flowers. Use different colors to represent the different species of flowers.
+
+```{r}
+library(ggplot2)
+ggplot(data = iris, aes(x = Sepal.Length, y = Sepal.Width, color = Species)) +
+  geom_point() +
+  ggtitle("Scatterplot of Sepal Length and Width") +
+  xlab("Sepal Length") +
+  ylab("Sepal Width")
+```
+
+## Question 3
+Create a boxplot of the petal length for each species of flower.
+    
+```{r}
+ggplot(data = iris, aes(x = Species, y = Petal.Length)) +
+  geom_boxplot() +
+  ggtitle("Boxplot of Petal Length by Species") +
+  xlab("Species") +
+  ylab("Petal Length")
+```
+
+## Question 4
+Create a histogram of the sepal width of the iris flowers
+
+```{r}
+ggplot(data = iris, aes(x = Sepal.Width, fill = Species)) +
+  geom_histogram(binwidth = 0.2, alpha = 0.5, position = "identity") +
+  ggtitle("Histogram of Sepal Width") +
+  xlab("Sepal Width") +
+  ylab("Frequency")
+```
+
+# B: Linear Regression
+## Question 1
+Load the mtcars dataset into R and explore its structure and summary statistics.
+
+```{r}
+data(mtcars)
+
+# Dataset structure of the mtcars dataset
+str(mtcars)
+
+# Summary statistics of the mtcars dataset
+summary(mtcars)
+```
+
+## Question 2
+Use linear regression to model the relationship between "mpg" (dependent variable) and "hp" (Independent variable). Interpret the regression coefficients and R-squared value.
+
+```{r}
+# Linear regression model
+model1 <- lm(mpg ~ hp, data = mtcars)
+summary(model1)
+```
+
+## Question 3
+3. Create a multiple linear regression model (using "hp" and "wt" as Independent variables, and mpg as a dependent variable).
+    
+```{r}
+model2 <- lm(mpg ~ hp + wt, data = mtcars)
+summary(model2)
+```
+
+## Question 4
+Compare the predictive power of the simple linear regression model (using "hp" as the predictor variable) and the multiple linear regression model (using "hp" and "wt" as predictor variables).
+    
+```{r}
+# Simple linear regression model
+predict1 <- predict(model1)
+
+# Multiple linear regression model
+predict2 <- predict(model2)
+
+# Root mean squared error
+rmse1 <- sqrt(mean((predict1 - mtcars$mpg)^2))
+rmse2 <- sqrt(mean((predict2 - mtcars$mpg)^2))
+
+# Print the RMSE values
+rmse1
+rmse2
+```
