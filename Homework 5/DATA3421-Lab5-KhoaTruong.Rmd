@@ -1,0 +1,155 @@
+---
+title: "Data3421-Lab5-KhoaTruong"
+output: html_document
+date: "2023-03-17"
+Name: "Khoa Truong"
+UTA ID: "1001626465"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r include=FALSE}
+library(base)
+library(dplyr)
+library(corrplot)
+library(car)
+library(tidyverse)
+library(readxl)
+library(ggplot2)
+library(data.table)
+library(datasets)
+library(Metrics)
+```
+
+# Lab 5
+## A: Data Visualization
+### Question 1
+
+```{r}
+iris_df <- iris
+View(iris_df)
+summary(iris_df)
+null_values <- is.na(iris_df)
+missing_cols <- colSums(null_values)
+print(missing_cols)
+```
+
+### Question 2
+
+```{r}
+plot1 <- ggplot(iris_df, aes(x = Sepal.Length, y = Sepal.Width, colour = Species))
+plot1 + geom_point(size = 3.5) +
+  scale_color_manual(values = c("yellow", "darkblue", "purple")) + 
+  labs(x = 'Sepal Length', y = 'Sepal Width') +
+  ggtitle("Sepal Length vs. Sepal Width in Iris Flowers") +
+  theme(plot.title = element_text(hjust = 0.5)) 
+```
+
+### Question 3
+
+```{r}
+plot2 <- ggplot(iris_df, aes(x = Species, y = Petal.Length, fill = Species))
+plot2 + geom_boxplot() + 
+  scale_fill_manual(values = c("yellow", "darkblue", "purple")) + 
+  ggtitle('Distribution of Petal Length between species of flower') + 
+  theme(plot.title = element_text(hjust = 0.5))
+```
+
+### Question 4
+##### A histogram of sepal width of all iris flowers
+
+```{r}
+plot3 <- ggplot(iris_df, aes(x = Sepal.Width))
+plot3 + geom_histogram(bins = 20, color = 'black', size = 0.8, fill = 'darkblue') + 
+  labs(x = 'Sepal Width', y = 'Counts') +
+  ggtitle("Distribution of Sepal Width in Iris Flowers") +
+  theme(plot.title = element_text(hjust = 0.5))
+```
+
+##### A histogram of sepal width of each species of iris flowers
+
+```{r}
+alpha_values <- c("setosa" = 1, "versicolor" = 0.8, "virginica" = 0.5)
+
+plot4 <- ggplot(iris_df, aes(x = Sepal.Width, fill = Species, alpha = Species))
+plot4 + geom_histogram(binwidth = 0.2, bins = 8, color = 'black') +
+  scale_fill_manual(values = c("yellow", "darkblue", "purple")) +
+  scale_alpha_manual(values = alpha_values, name = "Transparency") +
+  labs(x = 'Sepal Width', y = 'Counts') +
+  ggtitle("Distribution of Sepal Width of each species of Iris Flowers") +
+  theme(plot.title = element_text(hjust = 0.5))
+```
+
+## B: Linear Regression
+
+### Question 1
+
+```{r}
+cars_df <- mtcars
+View(cars_df)
+summary(cars_df)
+
+null_values2 <- is.na(cars_df)
+missing_cols2 <- colSums(null_values2)
+print(missing_cols2)
+```
+
+### Question 2
+
+```{r}
+linear_mpg_hp <- lm(mpg ~ hp, data = cars_df)
+summary(linear_mpg_hp)
+```
+
+##### The slope coefficient is -0.06823. For every one unit increases in the hp variable, the mpg variable decreases by 0.06823 units on average.
+##### The intercept coefficient is 30.09886. If our hp variable = 0, then our mpg variable = 30.09886.
+##### Our R2 is 0.6024 (60.24%). About 60.24% of the variation in mpg can be explained by the independent variable hp.
+
+### Question 3
+
+```{r}
+multiple_linear <- lm(mpg ~ (hp + wt), data = cars_df)
+summary(multiple_linear)
+```
+
+##### The Coefficient for hp is -0.03177. For every one unit increases in the hp variable, the mpg variable decreases by 0.03177 units on average while holding the wt variable constant.
+##### The Coefficient for wt is -3.87783. For every one unit increases in the wt variable, the mpg variable decreases by 3.87783 units on average while holding the hp variable constant.
+##### The intercept 37.22727 represents that if we have zero for both hp and wt, our mpg equals to 37.22727.
+##### Our R2 is 0.8268 (82.68%). About 82.68% of the variation in mpg can be explained by the independent variables hp and wt.
+
+
+### Question 4
+
+```{r}
+rmse1 <- sqrt(mse(linear_mpg_hp$fitted.values, cars_df$mpg))
+print(rmse1)
+```
+
+```{r}
+rmse2 <- sqrt(mse(multiple_linear$fitted.values, cars_df$mpg))
+print(rmse2)
+```
+
+```{r}
+anova(linear_mpg_hp, multiple_linear)
+plot(linear_mpg_hp)
+plot(multiple_linear)
+
+durbinWatsonTest(multiple_linear)
+```
+
+##### p-value was small, it seems like the residuals of the model are not independent and are correlated with each other.
+
+```{r}
+vif(multiple_linear)
+mean(vif(multiple_linear))
+```
+
+##### Since the average vif of the model is around 1.77, we can say that the variables are not correlated with one another.
+
+##### Based on RMSE, the multiple linear regression (2.468854) is smaller than the simple linear regression model (3.740297).
+##### Based on R2, the multiple linear regression (82.68%) is larger than the simple linear regression model (60.24%).
+##### However, since the Durbin-Watson Test shows that the multiple linear regression's residuals are correlated. 
+##### We can't really conclude that multiple linear regression performs better.  
