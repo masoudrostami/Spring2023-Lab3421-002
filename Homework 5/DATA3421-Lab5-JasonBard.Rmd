@@ -1,0 +1,80 @@
+---
+title: "Homework 5"
+author: "Jason Bard"
+date: "2023-03-16"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Setup
+
+```{r library, message = FALSE, warning = FALSE}
+library(ggplot2)
+library(tidyverse)
+library(datasets)
+library(dplyr)
+```
+
+# A: Data Visualization
+
+## 1. Load the iris dataset into R and explore its structure and summary statistics.
+```{r }
+head(iris)
+str(iris)
+summary(iris)
+```
+
+## 2. Create a scatterplot of the sepal length and width of the iris flowers. Use different colors to represent the different species of flowers.
+
+```{r }
+ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width, col = Species))+geom_point()
+```
+
+## 3. Create a boxplot of the petal length for each species of flower.
+
+```{r }
+ggplot(iris, aes(x = Petal.Length, col = Species))+geom_boxplot()
+```
+
+## 4. Create a histogram of the sepal width of the iris flowers.
+
+```{r }
+ggplot(iris, aes(x = Sepal.Width, fill = Species))+geom_histogram(bins = 10)
+```
+
+# B: Linear Regression
+
+## 1. Load the mtcars dataset into R and explore its structure and summary statistics.
+
+```{r }
+data(mtcars)
+str(mtcars)
+summary(mtcars)
+```
+
+## 2. Use linear regression to model the relationship between "mpg" (dependent variable) and "hp" (Independent variable). Interpret the regression coefficients and R-squared value.
+
+```{r }
+model1 = lm(mtcars$mpg ~ mtcars$hp)
+summary(model1)
+```
+
+The line that approximates the relationship between MPG and HP has a y-intercept of 30.09886 and a slope of -0.06923. This relationship has an R-squared estimate of 0.6024 and an adjusted R-squared estimate of 0.5892.
+
+## 3. Create a multiple linear regression model (using "hp" and "wt" as Independent variables, and mpg as a dependentvariable).
+
+```{r }
+model2 = lm(data = mtcars, mpg~hp+wt)
+summary(model2)
+```
+
+## 4. Compare the predictive power of the simple linear regression model (using "hp" as the predictor variable) and the multiple linear regression model (using "hp" and "wt" as predictor variables).
+
+```{r }
+anova(model1, model2)
+```
+
+The two models are different because the P-value (assuming that `P = Pr(>F)`) is less than 0.05.
