@@ -1,0 +1,93 @@
+---
+title: 'Homework 5'
+output: html_document
+date: '2023-04-24'
+name: 'Alex Nanez'
+---
+
+# A: Data Visualization
+
+## Question 1
+```{r}
+### Importing Libraries
+
+library(tidyverse)
+library(dplyr)
+library(ggplot2)
+
+### 1. Importing iris data set
+library(datasets)
+#View(iris)
+str(iris)
+summary(iris)
+```
+I loaded the **iris** data set from the datasets package and looked at its structure and summary statistics accordingly.
+
+## Question 2
+```{r}
+### 2. Creating scatter plot of sepal length and width of iris flowers
+#plot(iris$Sepal.Length~iris$Sepal.Width, main = 'Sepal Width vs Sepal Length',
+#     xlab = 'Sepal Width', ylab = 'Sepal Length', cex.main = 1.5, cex.lab = .9,
+#     cex.axis = .8)
+
+d<-ggplot(data=iris,aes(x=Sepal.Length,y=Sepal.Width,colour=Species))
+d
+d+geom_point()
+```
+
+I created a scatterplot looking at the relationship between sepal length and sepal width while distinguishing the data by species.
+
+### Question 3
+```{r}
+### 3. Creating box plot of petal length for each species of flower
+b<-ggplot(data=iris,aes(x=Petal.Length,y=Species,colour=Species))
+b+geom_boxplot()
+```
+
+I created a boxplot of the feature petal length for all 3 species of iris flowers.
+
+## Question 4
+```{r}
+### 4. Creating histogram of sepal width of iris flowers
+ggplot()+geom_histogram(data=iris,
+                        aes(x=Sepal.Width,y=after_stat(density),fill=Species))
+```
+
+I created a histogram looking at the distribution of sepal width of the iris flowers.
+
+# B: Linear Regression
+
+## Question 1
+```{r}
+### 1. Importing mtcars data set
+#help(mtcars)
+#View(mtcars)
+str(mtcars)
+summary(mtcars)
+```
+I loaded the **mtcars** data set from the datasets package and explored its structure and summary statistics accordingly.
+
+## Question 2
+```{r}
+### 2. Using linear regression
+l<-lm(mtcars$mpg~mtcars$hp)
+l
+summary(l)
+```
+Looking at the Multiple R-squared value, 60% of variation can be explained from the hp (horsepower) feature. The regression coefficient is negative, implying a negative correlation.
+
+## Question 3
+```{r}
+### 3. Using multiple linear regression model
+ml<-lm(mtcars$mpg~mtcars$hp+mtcars$wt)
+ml
+summary(ml)
+```
+Looking at the Multiple R-squared value, 82.68% of variation can be explained from the hp (horsepower) and wt (weight) features.
+
+## Question 4
+```{r}
+### 4. Compare the predictive power of both models
+anova(l,ml) 
+```
+We can see that the second model performs better than the first (high F value and low significant p-value).

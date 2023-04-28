@@ -1,0 +1,3 @@
+{"categorical_vars":["event_name", "fqid", "room_fqid", "text"],
+"numerical_vars":["elapsed_time", "level", "page", "room_coor_x", "room_coor_y", "screen_coor_x", "screen_coor_y", "hover_duration"],
+"events":["navigate_click", "person_click", "cutscene_click", "object_click","map_hover","notification_click","map_click","observation_click","checkpoint"]}
