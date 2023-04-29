@@ -9,7 +9,7 @@ Autism spectrum disorder (ASD) can be characterized by impairment of social abil
 
 # Dataset
 
-The Autism Brain Imaging Data Exchange (ABIDE) is a collection of brain scans of more than 1000 individuals, about half of whom have been diagnosed with ASD. This dataset contains both phenotypic data of individual patients as well as functional MRIs collected at resting state (rs-fMRIs), which reflects changes in blood flow and brain activity of individual patients. The phenotypic data is readily available at https://www.nitrc.org/frs/downloadlink.php/9108. It contains 1114 individuals with 348 features.
+The Autism Brain Imaging Data Exchange (ABIDE) is a collection of brain scans of more than 1000 individuals, about half of whom have been diagnosed with ASD. This dataset contains both phenotypic data of individual patients as well as functional MRIs collected at resting state (rs-fMRIs), which reflects changes in blood flow and brain activity of individual patients. The phenotypic data is readily available at https://www.nitrc.org/frs/downloadlink.php/9108, although registration with an account may be necessary. The dataset contains 1114 individuals with 348 features.
 
 # Exploratory Data Analysis
 
@@ -26,7 +26,11 @@ The correlation matrix of all categories after preprocessing is also useful to l
 
 # Data Preprocessing
 
-The phenotypic data contained the sums of scores for various questionnaires and therapeutic tests that the patients underwent. Additionally, the data had scores for each category of every test, including three types of IQ tests. No patient underwent every test; in fact, many patients only underwent one or two of these tests. In response to this, NaNs were present wherever a test was not performed on a patient. To indicate that a patient did not do a test, all the scores were replaced with -1, since they are non-negative integers. Moreover, the IQ tests were encoded using one-hot encoding in discerning which type was administered. However, the data was not normalized because it was suspected this may introduce unnecessary bias into the machine learning models. Finally, one subject was disqualified because their eye status at scan was undetermined. In the end, the dataset became 1113 inputs with 74 features.
+The phenotypic data contained the sums of scores for various questionnaires and therapeutic tests that the patients underwent. These were selected, which resulted in a table of only 30 features:
+
+```['DX_GROUP', 'AGE_AT_SCAN', 'SEX', 'HANDEDNESS_CATEGORY', 'EYE_STATUS_AT_SCAN', 'FIQ', 'VIQ', 'PIQ', 'ADOS_G_TOTAL', 'ADOS_2_TOTAL', 'SRS_TOTAL_T', 'SCQ_TOTAL', 'VINELAND_SUM_SCORES', 'RBSR_6SUBSCALE_TOTAL', 'RBSR_5SUBSCALE_TOTAL', 'MASC_TOTAL_T', 'CBCL_1.5-5_TOTAL_T', 'BDI_TOTAL', 'WIAT-II-A_TOTAL_COMPOSITE_S', 'CPRS_DSM_IV_TOTAL', 'ADI_R_SOCIAL_TOTAL_A', 'ADI_R_VERBAL_TOTAL_BV', 'ADI_R_NONVERBAL_TOTAL_BV', 'ADI_R_RRB_TOTAL_C', 'ADI_R_ONSET_TOTAL_D']```
+
+Additionally, the data had scores for each category of every test, including three types of IQ tests. No patient underwent every test; in fact, many patients only underwent one or two of these tests. In response to this, NaNs were present wherever a test was not performed on a patient. To indicate that a patient did not do a test, all the scores were replaced with -1, since they are non-negative integers. Moreover, the IQ test types were encoded using one-hot encoding to determine which type(s) of IQ tests may have been administered on each patient. However, the data was not normalized because it was suspected this may introduce unnecessary bias into the machine learning models. Finally, one subject was disqualified because their eye status at scan was undetermined. In the end, the dataset became 1113 inputs with 74 features.
 
 # Model Selection
 
